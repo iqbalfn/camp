@@ -327,6 +327,51 @@ class Camp
     }
     
     /**
+     * Convert twitter embed
+     * @return $this
+     */
+    private function _convertTwitter(){
+        $blockquotes = $this->doc->getElementsByTagName('blockquote');
+        if(!$blockquotes->length)
+            return $this;
+            
+        for($i=($blockquotes->length-1); $i>=0; $i--){
+            $twitter = $blockquotes[$i];
+            if($twitter->getAttribute('class') != 'twitter-tweet')
+                continue;
+            
+            $anchor = $twitter->getElementsByTagName('a');
+            if(!$anchor->length)
+                continue;
+            
+            $anchor = $anchor->item(($anchor->length-1));
+            
+            $twitter_id = null;
+            $regex = '!^https:\/\/twitter.com\/ardanradio\/status\/([0-9]+)!';
+            if(preg_match($regex, $anchor->getAttribute('href'), $m))
+                $twitter_id = $m[1];
+            
+            if(!$twitter_id)
+                continue;
+            
+            $amp_twitter = $this->doc->createElement('amp-twitter');
+            $attrs = array(
+                'width' => 486,
+                'height'=> 657,
+                'layout'=> 'responsive',
+                'data-tweetid' => $twitter_id,
+                'data-cards' => 'hidden'
+            );
+            
+            $this->_setAttribute($amp_twitter, $attrs);
+            
+            $twitter->parentNode->replaceChild($amp_twitter, $twitter);
+        }
+        
+        return $this;
+    }
+    
+    /**
      * Get element attribute
      * @param object node The node where the attr taken.
      * @param array attrs attr-required pair of attribute to get.
@@ -394,6 +439,7 @@ class Camp
         $this
             ->_convertImg()
             ->_convertAd()
+            ->_convertTwitter()
             ->_convertIframe()
             ->_cleanProhibitedTag();
         

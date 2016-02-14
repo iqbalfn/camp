@@ -13,20 +13,22 @@ AMP specifications.
 Usage
 -----
 
-    <?php
-    
-    require_once '/path/to/Camp.php';
-    
-    $html = '<div id="main-content'>...</div>';
-    $options = array(...);
-    
-    $camp = new Camp($html, $options);
-    
-    $amp = $camp->amp;
-    $comps = $camp->components;
-    
-    foreach($comps as $comp)
-        echo '<script async custom-element="' . $comp . '" src="https://cdn.ampproject.org/v0/' . $comp . '-0.1.js"></script>';
+```php
+<?php
+
+require_once '/path/to/Camp.php';
+
+$html = '<div id="main-content'>...</div>';
+$options = array(...);
+
+$camp = new Camp($html, $options);
+
+$amp = $camp->amp;
+$comps = $camp->components;
+
+foreach($comps as $comp)
+    echo '<script async custom-element="' . $comp . '" src="https://cdn.ampproject.org/v0/' . $comp . '-0.1.js"></script>';
+```
 
 Methods
 -------
@@ -35,42 +37,50 @@ Methods
 
 Set the options value
 
-    // #1
-    $options = array(
-        'defaultWidth' => 600,
-        'defaultHeight'=> 450
-    );
-    
-    $camp->setOptions($options);
-    
-    // #2
-    $camp->setOptions('localHost', 'http://localhost');
+```php
+<?php
+
+// #1
+$options = array(
+    'defaultWidth' => 600,
+    'defaultHeight'=> 450
+);
+
+$camp->setOptions($options);
+
+// #2
+$camp->setOptions('localHost', 'http://localhost');
+```
 
 ### convert ( string `$html`, array `$options` )
 
 Start convert the content.
 
-    // #1
-    
-    $html = '<div id="main-content">...</div>';
-    $opts = array(...);
-    
-    $camp = new Camp($html, $opts);
-    
-    $amp  = $camp->amp;
-    $comps= $camp->components;
-    
-    // #2
-    
-    $camp = new Camp;
-    
-    $camp->html = '<div id="main-content">...</div>';
-    $camp->setOptions(...);
-    
-    $camp->convert();
-    
-    $amp   = $camp->amp;
-    $comps = $camp->comps;
+```php
+<?php
+
+// #1
+
+$html = '<div id="main-content">...</div>';
+$opts = array(...);
+
+$camp = new Camp($html, $opts);
+
+$amp  = $camp->amp;
+$comps= $camp->components;
+
+// #2
+
+$camp = new Camp;
+
+$camp->html = '<div id="main-content">...</div>';
+$camp->setOptions(...);
+
+$camp->convert();
+
+$amp   = $camp->amp;
+$comps = $camp->comps;
+```
 
 Properties
 ----------
@@ -133,7 +143,7 @@ TODO
 find out how to define different layout.
 2. Remove unusable SVG syntax.
 3. `amp-ad`. Support another ad provider, currently only support AdSense.
-4. `amp-youtub`. Support for old youtube embed style ( which is i've no example to test )
+4. `amp-youtube`. Support for old youtube embed style ( which is i've no example to test )
 5. Support another components  
 amp-access-spec  
 amp-analytics  
@@ -154,7 +164,6 @@ amp-mustache
 amp-pinterest  
 amp-pixel  
 amp-slides  
-amp-twitter  
 amp-user-notification  
 amp-video  
 amp-vine  

@@ -99,6 +99,29 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
     
     
     /**************************************************************************
+     * AMP-TWITTER
+     **************************************************************************/
+    
+    public function ampTwitterProvider(){
+        return array(
+            array(
+                'lorem <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">32. <a href="https://twitter.com/officialR5">@officialR5</a> - Dark Side<a href="https://twitter.com/hashtag/FLIGHT40?src=hash">#FLIGHT40</a><a href="https://twitter.com/hashtag/CumaDiArdan?src=hash">#CumaDiArdan</a> <a href="https://t.co/z7BrNJllHl">pic.twitter.com/z7BrNJllHl</a></p>&mdash; 105.9 FM ARDAN Radio (@ardanradio) <a href="https://twitter.com/ardanradio/status/698353355203092480">February 13, 2016</a></blockquote><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> ipsum',
+                'lorem <amp-twitter width="486" height="657" layout="responsive" data-tweetid="698353355203092480" data-cards="hidden"></amp-twitter> ipsum'
+            )
+        );
+    }
+    
+    /**
+     * @dataProvider ampTwitterProvider
+     * @group amp-twitter
+     */
+    public function testAmpTeitter($html, $amp){
+        $camp = new Camp($html);
+        $this->assertEquals($amp, $camp->amp);
+    }
+    
+    
+    /**************************************************************************
      * AMP-YOUTUBE
      **************************************************************************/
     
