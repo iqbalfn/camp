@@ -99,6 +99,33 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
     
     
     /**************************************************************************
+     * AMP-IFRAME
+     **************************************************************************/
+     
+     public function ampIFrameProvider(){
+        return array(
+            array(
+                'lorem <iframe src="https://foo.com/iframe" height="300" width="300" frameborder="0"></iframe> ipsum',
+                'lorem <amp-iframe src="https://foo.com/iframe" width="300" height="300" frameborder="0" sandbox="allow-scripts allow-same-origin" layout="responsive"></amp-iframe> ipsum'
+            ),
+            array(
+                'lorem <iframe src="https://foo.com/iframe" height="300" width="300"></iframe> ipsum',
+                'lorem <amp-iframe src="https://foo.com/iframe" width="300" height="300" sandbox="allow-scripts allow-same-origin" layout="responsive"></amp-iframe> ipsum'
+            )
+        );
+     }
+     
+     /**
+      * @dataProvider ampIFrameProvider
+      * @group amp-iframe
+      */
+    public function testAmpIFrame($html, $amp){
+        $camp = new Camp($html);
+        $this->assertEquals($amp, $camp->amp);
+    }
+    
+    
+    /**************************************************************************
      * AMP-TWITTER
      **************************************************************************/
     

@@ -171,6 +171,8 @@ class Camp
                 
                 $this->_setAttribute($amp_ad, $attr);
                 $ins->parentNode->replaceChild($amp_ad, $ins);
+                
+                $this->_addComponent('amp-ad');
             }
         }
         
@@ -214,7 +216,8 @@ class Camp
             $attrs = $this->_getAttribute($iframe, array(
                 'src' => true,
                 'width' => true,
-                'height' => true
+                'height' => true,
+                'frameborder' => false
             ));
             
             $src = $attrs['src'];
@@ -236,7 +239,16 @@ class Camp
                 }
             }
             
-            if($iframe)
+            if(!$amp_el){
+                $this->_addComponent('amp-iframe');
+                $attrs['sandbox'] = 'allow-scripts allow-same-origin';
+                $attrs['layout'] = 'responsive';
+                
+                $amp_el = $this->doc->createElement('amp-iframe');
+                $this->_setAttribute($amp_el, $attrs);
+            }
+            
+            if($amp_el)
                 $iframe->parentNode->replaceChild($amp_el, $iframe);
         }
         
@@ -347,9 +359,9 @@ class Camp
             $anchor = $anchor->item(($anchor->length-1));
             
             $twitter_id = null;
-            $regex = '!^https:\/\/twitter.com\/ardanradio\/status\/([0-9]+)!';
+            $regex = '!^https:\/\/twitter.com\/(\w+)\/status\/([0-9]+)!';
             if(preg_match($regex, $anchor->getAttribute('href'), $m))
-                $twitter_id = $m[1];
+                $twitter_id = $m[2];
             
             if(!$twitter_id)
                 continue;
@@ -366,6 +378,8 @@ class Camp
             $this->_setAttribute($amp_twitter, $attrs);
             
             $twitter->parentNode->replaceChild($amp_twitter, $twitter);
+            
+            $this->_addComponent('amp-twitter');
         }
         
         return $this;
@@ -396,11 +410,16 @@ class Camp
      */
     private function _makeAmpYoutube($id, $attrs){
         unset($attrs['src']);
+        if(array_key_exists('frameborder', $attrs))
+            unset($attrs['frameborder']);
+        
         $attrs['data-videoid'] = $id;
         $attrs['layout'] = 'responsive';
         
         $amp_youtube = $this->doc->createElement('amp-youtube');
         $this->_setAttribute($amp_youtube, $attrs);
+        
+        $this->_addComponent('amp-youtube');
         
         return $amp_youtube;
     }
