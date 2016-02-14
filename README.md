@@ -152,7 +152,6 @@ amp-audio
 amp-brightcove  
 amp-carousel  
 amp-dynamic-css-classes  
-amp-facebook  
 amp-fit-text  
 amp-font  
 amp-image-lightbox  

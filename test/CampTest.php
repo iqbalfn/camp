@@ -99,6 +99,37 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
     
     
     /**************************************************************************
+     * AMP-FACEBOOK
+     **************************************************************************/
+     
+     public function ampFacebookProvider(){
+        return array(
+            array(
+                'lorem <div id="fb-root"></div><script>(function(d, s, id) {  var js, fjs = d.getElementsByTagName(s)[0];  if (d.getElementById(id)) return;  js = d.createElement(s); js.id = id;  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";  fjs.parentNode.insertBefore(js, fjs);}(document, \'script\', \'facebook-jssdk\'));</script><div class="fb-post" data-href="https://www.facebook.com/zuck/posts/10102593740125791" data-width="500"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/zuck/posts/10102593740125791"><p>February 4 is Facebook&#x2019;s 12th birthday!Our anniversary has a lot of meaning to me as an opportunity to reflect on how...</p>Posted by <a href="https://www.facebook.com/zuck">Mark Zuckerberg</a> on&nbsp;<a href="https://www.facebook.com/zuck/posts/10102593740125791">Tuesday, January 12, 2016</a></blockquote></div></div> ipsum',
+                'lorem <amp-facebook width="486" height="657" layout="responsive" data-href="https://www.facebook.com/zuck/posts/10102593740125791"></amp-facebook> ipsum'
+            ),
+            array(
+                'lorem <div id="fb-root"></div><script>(function(d, s, id) {  var js, fjs = d.getElementsByTagName(s)[0];  if (d.getElementById(id)) return;  js = d.createElement(s); js.id = id;  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";  fjs.parentNode.insertBefore(js, fjs);}(document, \'script\', \'facebook-jssdk\'));</script><div class="fb-post" data-href="https://www.facebook.com/zuck/videos/10102509264909801/" data-width="500"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/zuck/videos/10102509264909801/"><p>I want to share a few more thoughts on the Chan Zuckerberg Initiative before I just start posting photos of me and Max...</p>Posted by <a href="https://www.facebook.com/zuck">Mark Zuckerberg</a> on&nbsp;<a href="https://www.facebook.com/zuck/videos/10102509264909801/">Friday, December 4, 2015</a></blockquote></div></div> ipsum',
+                'lorem <amp-facebook width="552" height="574" layout="responsive" data-embed-as="video" data-href="https://www.facebook.com/zuck/videos/10102509264909801/"></amp-facebook> ipsum'
+            ),
+            array(
+                'lorem <iframe width="750" height="472" allowfullscreen="allowfullscreen" src="https://www.facebook.com/v2.5/plugins/video.php?href=https://www.facebook.com/syahranazrah.allang/videos/1137021029650553/"></iframe> ipsum',
+                'lorem <amp-facebook width="750" height="472" layout="responsive" data-embed-as="video" data-href="https://www.facebook.com/syahranazrah.allang/videos/1137021029650553"></amp-facebook> ipsum'
+            )
+        );
+     }
+     
+     /**
+      * @dataProvider ampFacebookProvider
+      * @group amp-facebook
+      */
+    public function testAmpFacebook($html, $amp){
+        $camp = new Camp($html);
+        $this->assertEquals($amp, $camp->amp);
+    }
+    
+    
+    /**************************************************************************
      * AMP-IFRAME
      **************************************************************************/
      

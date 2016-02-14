@@ -180,6 +180,45 @@ class Camp
     }
     
     /**
+     * Convert facebook 
+     * @return $this
+     */
+    private function _convertFacebook(){
+        $divs = $this->doc->getElementsByTagName('div');
+        
+        $fb_href = null;
+        
+        if($divs->length){
+            for($i=($divs->length-1); $i>=0; $i--){
+                $div = $divs->item($i);
+                
+                if($div->getAttribute('id') == 'fb-root'){
+                    $div->parentNode->removeChild($div);
+                    continue;
+                }
+                
+                if($div->getAttribute('class') == 'fb-post'){
+                    $fb_href = $div->getAttribute('data-href');
+                    $is_video = preg_match('/videos/', $fb_href);
+                    $method = '_makeAmpFacebookPost';
+                    $attrs = array('width'=>486, 'height'=>657);
+                    
+                    if($is_video){
+                        $method = '_makeAmpFacebookVideo';
+                        $attrs = array('width'=>552, 'height'=>574);
+                    }
+                    
+                    $amp_fb = $this->$method($fb_href, $attrs);
+                    
+                    $div->parentNode->replaceChild($amp_fb, $div);
+                }
+            }
+        }
+        
+        return $this;
+    }
+    
+    /**
      * Convert iFrame 
      * @return $this
      */
@@ -206,6 +245,17 @@ class Camp
                     array(
                         'regex' => '/youtube.com\/embed\/([a-z0-9]+)/i',
                         'index' => 1
+                    )
+                )
+            ),
+            '_makeAmpFacebookVideo' => array(
+                'width' => 750,
+                'height'=> 472,
+                
+                'regexps' => array(
+                    array(
+                        'regex' => '/https:\/\/www\.facebook\.com\/([^\/]+)\/videos\/([0-9]+)/i',
+                        'index' => 0
                     )
                 )
             )
@@ -403,6 +453,51 @@ class Camp
     }
     
     /**
+     * Make amp-facebook component
+     * @param string id Facebook post URL
+     * @param array attrs List of element attribute
+     * @return object amp-facebook node
+     */
+    private function _makeAmpFacebookPost($id, $attrs){
+        unset($attrs['src']);
+        if(array_key_exists('frameborder', $attrs))
+            unset($attrs['frameborder']);
+        
+        $attrs['layout'] = 'responsive';
+        $attrs['data-href'] = $id;
+        
+        $amp_facebook = $this->doc->createElement('amp-facebook');
+        $this->_setAttribute($amp_facebook, $attrs);
+        
+        $this->_addComponent('amp-facebook');
+        
+        return $amp_facebook;
+    }
+    
+    /**
+     * Make amp-facebook component
+     * @param string id Facebook vidoe URL
+     * @param array attrs List of element attribute
+     * @return object amp-facebook node
+     */
+    private function _makeAmpFacebookVideo($id, $attrs){
+        unset($attrs['src']);
+        if(array_key_exists('frameborder', $attrs))
+            unset($attrs['frameborder']);
+        
+        $attrs['layout'] = 'responsive';
+        $attrs['data-embed-as'] = 'video';
+        $attrs['data-href'] = $id;
+        
+        $amp_facebook = $this->doc->createElement('amp-facebook');
+        $this->_setAttribute($amp_facebook, $attrs);
+        
+        $this->_addComponent('amp-facebook');
+        
+        return $amp_facebook;
+    }
+    
+    /**
      * Make amp-youtube component
      * @param string id Youtube video id
      * @param array attrs List of element attribute
@@ -459,6 +554,7 @@ class Camp
             ->_convertImg()
             ->_convertAd()
             ->_convertTwitter()
+            ->_convertFacebook()
             ->_convertIframe()
             ->_cleanProhibitedTag();
         
