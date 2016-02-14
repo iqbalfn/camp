@@ -150,6 +150,10 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
             'should set src http to https' => array(
                 'lorem <iframe src="http://foo.com/iframe" height="300" width="300"></iframe> ipsum',
                 'lorem <amp-iframe src="https://foo.com/iframe" width="300" height="300" sandbox="allow-scripts allow-same-origin" layout="responsive"></amp-iframe> ipsum'
+            ),
+            'should fill iframe size' => array(
+                'lorem <iframe src="https://foo.com/iframe"></iframe> ipsum',
+                'lorem <amp-iframe src="https://foo.com/iframe" width="300" height="200" sandbox="allow-scripts allow-same-origin" layout="responsive"></amp-iframe> ipsum'
             )
         );
      }

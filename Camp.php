@@ -298,6 +298,11 @@ class Camp
                 'frameborder' => false
             ));
             
+            if(!$attrs['width'])
+                $attrs['width'] = $this->defaultWidth;
+            if(!$attrs['height'])
+                $attrs['height'] = $this->defaultHeight;
+            
             $src = $attrs['src'];
             
             $amp_el = null;
