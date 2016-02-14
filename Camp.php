@@ -149,7 +149,11 @@ class Camp
      */
     private function _cleanProhibitedAttribute(){
         // remove global prohibited attribute
-        $prohibited_attrs = array('style', 'start');
+        $prohibited_attrs = array(
+            'align',
+            'start',
+            'style'
+        );
         
         $xpath = new DOMXPath($this->doc);
         
@@ -298,6 +302,9 @@ class Camp
                 'frameborder' => false
             ));
             
+            $attrs['width'] = (int)$attrs['width'];
+            $attrs['height']= (int)$attrs['height'];
+            
             if(!$attrs['width'])
                 $attrs['width'] = $this->defaultWidth;
             if(!$attrs['height'])
@@ -360,6 +367,9 @@ class Camp
                 'srcset' => false,
                 'alt'    => false
             ));
+            
+            $attr['width'] = (int)$attr['width'];
+            $attr['height']= (int)$attr['height'];
             
             if(!$attr['width'] || !$attr['height']){
                 $is_relative = substr($attr['src'], 0, 4) !== 'http';
