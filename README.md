@@ -7,6 +7,10 @@ article of the page, as in most case main article is the part where you generate
 it by WYSIWYG ( ex: tinymce ). While another HTML part should rewrite to fullfill
 AMP specifications.
 
+Due to complicated processing in background, I'll suggest you to not to use the
+library for every user request. Please cache the result or save it on your DB 
+instead of converting it everytime google/user ask for it.
+
 **Warning**: This project still under heavy-development as the 
 [ampproject](https://www.ampproject.org/) it self still in active development.
 

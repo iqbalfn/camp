@@ -144,6 +144,30 @@ class Camp
     }
     
     /**
+     * Clean prohibited attribute
+     * @return $this
+     */
+    private function _cleanProhibitedAttribute(){
+        // remove global prohibited attribute
+        $prohibited_attrs = array('style', 'start');
+        
+        $xpath = new DOMXPath($this->doc);
+        
+        foreach($prohibited_attrs as $attr){
+            $els = $xpath->query("//*[@$attr]");
+            if(!$els->length)
+                continue;
+            
+            foreach($els as $el){
+                if($el->hasAttribute($attr))
+                    $el->removeAttribute($attr);
+            }
+        }
+        
+        return $this;
+    }
+    
+    /**
      * Convert various ad to amp-ad 
      * @return $this
      */
@@ -197,7 +221,8 @@ class Camp
                     continue;
                 }
                 
-                if($div->getAttribute('class') == 'fb-post'){
+                $class = $div->getAttribute('class');
+                if($class == 'fb-post' || $class == 'fb-video'){
                     $fb_href = $div->getAttribute('data-href');
                     $is_video = preg_match('/videos/', $fb_href);
                     $method = '_makeAmpFacebookPost';
@@ -207,6 +232,9 @@ class Camp
                         $method = '_makeAmpFacebookVideo';
                         $attrs = array('width'=>552, 'height'=>574);
                     }
+                    
+                    if(substr($fb_href, 0, 6) != 'https:')
+                        $fb_href = 'https://www.facebook.com/' . ltrim($fb_href, '/');
                     
                     $amp_fb = $this->$method($fb_href, $attrs);
                     
@@ -243,7 +271,7 @@ class Camp
                         'index' => 2
                     ),
                     array(
-                        'regex' => '/youtube.com\/embed\/([a-z0-9]+)/i',
+                        'regex' => '/youtube.com\/embed\/([\w\-.]+)/i',
                         'index' => 1
                     )
                 )
@@ -294,6 +322,10 @@ class Camp
                 $attrs['sandbox'] = 'allow-scripts allow-same-origin';
                 $attrs['layout'] = 'responsive';
                 
+                // set http to https
+                if(substr($attrs['src'], 0, 5) !== 'https')
+                    $attrs['src'] = preg_replace('!^http:!', 'https:', $attrs['src']);
+                
                 $amp_el = $this->doc->createElement('amp-iframe');
                 $this->_setAttribute($amp_el, $attrs);
             }
@@ -320,6 +352,7 @@ class Camp
                 'src'    => true,
                 'width'  => true,
                 'height' => true,
+                'srcset' => false,
                 'alt'    => false
             ));
             
@@ -556,7 +589,8 @@ class Camp
             ->_convertTwitter()
             ->_convertFacebook()
             ->_convertIframe()
-            ->_cleanProhibitedTag();
+            ->_cleanProhibitedTag()
+            ->_cleanProhibitedAttribute();
         
         $amp = $this->doc->saveHTML();
         preg_match('!^.+<body>(.+)</body>.+$!s', $amp, $m);

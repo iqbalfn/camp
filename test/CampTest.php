@@ -115,6 +115,10 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
             array(
                 'lorem <iframe width="750" height="472" allowfullscreen="allowfullscreen" src="https://www.facebook.com/v2.5/plugins/video.php?href=https://www.facebook.com/syahranazrah.allang/videos/1137021029650553/"></iframe> ipsum',
                 'lorem <amp-facebook width="750" height="472" layout="responsive" data-embed-as="video" data-href="https://www.facebook.com/syahranazrah.allang/videos/1137021029650553"></amp-facebook> ipsum'
+            ),
+            array(
+                'lorem <div class="fb-video" data-allowfullscreen="1" data-href="/MiaChibbie/videos/vb.100003034897952/835741256537030/?type=3">&nbsp;</div> ipsum',
+                'lorem <amp-facebook width="552" height="574" layout="responsive" data-embed-as="video" data-href="https://www.facebook.com/MiaChibbie/videos/vb.100003034897952/835741256537030/?type=3"></amp-facebook> ipsum'
             )
         );
      }
@@ -135,12 +139,16 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
      
      public function ampIFrameProvider(){
         return array(
-            array(
+            'should convert iframe to amp-iframe' => array(
+                'lorem <iframe src="https://foo.com/iframe" height="300" width="300"></iframe> ipsum',
+                'lorem <amp-iframe src="https://foo.com/iframe" width="300" height="300" sandbox="allow-scripts allow-same-origin" layout="responsive"></amp-iframe> ipsum'
+            ),
+            'should convert iframe with attribute frameborder to amp-iframe with frameborder' => array(
                 'lorem <iframe src="https://foo.com/iframe" height="300" width="300" frameborder="0"></iframe> ipsum',
                 'lorem <amp-iframe src="https://foo.com/iframe" width="300" height="300" frameborder="0" sandbox="allow-scripts allow-same-origin" layout="responsive"></amp-iframe> ipsum'
             ),
-            array(
-                'lorem <iframe src="https://foo.com/iframe" height="300" width="300"></iframe> ipsum',
+            'should set src http to https' => array(
+                'lorem <iframe src="http://foo.com/iframe" height="300" width="300"></iframe> ipsum',
                 'lorem <amp-iframe src="https://foo.com/iframe" width="300" height="300" sandbox="allow-scripts allow-same-origin" layout="responsive"></amp-iframe> ipsum'
             )
         );
@@ -332,8 +340,37 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider prohibitedProvider
      * @group prohibited-tag
+     * @group prohibited
      */
     public function testProhibitedTags($html, $amp){
+        $camp = new Camp($html);
+        $this->assertEquals($amp, $camp->amp);
+    }
+    
+    
+    /**************************************************************************
+     * PROHIBITED ATTRIBUTE
+     **************************************************************************/
+     
+     public function prohibitedAttrProvider(){
+        return array(
+            array(
+                'lorem <ol start="2"></ol> ipsum',
+                'lorem <ol></ol> ipsum'
+            ),
+            array(
+                'lorem <p style="text-align:center"></p> ipsum',
+                'lorem <p></p> ipsum'
+            )
+        );
+     }
+     
+    /**
+     * @dataProvider prohibitedProvider
+     * @group prohibited-attr
+     * @group prohibited
+     */
+    public function testProhibitedAttrs($html, $amp){
         $camp = new Camp($html);
         $this->assertEquals($amp, $camp->amp);
     }
