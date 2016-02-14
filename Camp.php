@@ -178,6 +178,72 @@ class Camp
     }
     
     /**
+     * Convert iFrame 
+     * @return $this
+     */
+    private function _convertIframe(){
+        $iframes = $this->doc->getElementsByTagName('iframe');
+        
+        if(!$iframes->length)
+            return $this;
+        
+        $regexps = array(
+            '_makeAmpYoutube' => array(
+                'width' => 560,
+                'height'=> 314,
+                
+                'regexps' => array(
+                    array(
+                        'regex' => '/youtu\.be\/([\w\-.]+)/',
+                        'index' => 1
+                    ),
+                    array(
+                        'regex' => '/youtube\.com(.+)v=([^&]+)/',
+                        'index' => 2
+                    ),
+                    array(
+                        'regex' => '/youtube.com\/embed\/([a-z0-9]+)/i',
+                        'index' => 1
+                    )
+                )
+            )
+        );
+        
+        for($i=($iframes->length-1); $i>=0; $i--){
+            $iframe = $iframes->item($i);
+            $attrs = $this->_getAttribute($iframe, array(
+                'src' => true,
+                'width' => true,
+                'height' => true
+            ));
+            
+            $src = $attrs['src'];
+            
+            $amp_el = null;
+            
+            // let find out if it's one of known componentes
+            foreach($regexps as $method => $rule){
+                foreach($rule['regexps'] as $re){
+                    if(preg_match($re['regex'], $attrs['src'], $m)){
+                        if(!$attrs['width'])
+                            $attrs['width'] = $rule['width'];
+                        if(!$attrs['height'])
+                            $attrs['height'] = $rule['height'];
+                        
+                        $amp_el = $this->$method($m[$re['index']], $attrs);
+                        break 2;
+                    }
+                }
+            }
+            
+            if($iframe)
+                $iframe->parentNode->replaceChild($amp_el, $iframe);
+        }
+        
+        return $this;
+    }
+    
+    /**
      * Convert img tag to amp-img/amp-anim
      * @return $this
      */
@@ -278,6 +344,23 @@ class Camp
     }
     
     /**
+     * Make amp-youtube component
+     * @param string id Youtube video id
+     * @param array attrs List of element attribute
+     * @return object amp-youtube node
+     */
+    private function _makeAmpYoutube($id, $attrs){
+        unset($attrs['src']);
+        $attrs['data-videoid'] = $id;
+        $attrs['layout'] = 'responsive';
+        
+        $amp_youtube = $this->doc->createElement('amp-youtube');
+        $this->_setAttribute($amp_youtube, $attrs);
+        
+        return $amp_youtube;
+    }
+    
+    /**
      * Set element attribute
      * @param object node The node where the element will be put
      * @param array attrs name-value pair of attribute to set.
@@ -311,6 +394,7 @@ class Camp
         $this
             ->_convertImg()
             ->_convertAd()
+            ->_convertIframe()
             ->_cleanProhibitedTag();
         
         $amp = $this->doc->saveHTML();

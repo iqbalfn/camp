@@ -2,12 +2,13 @@
 
 require dirname(dirname(__FILE__)) . '/Camp.php';
 
-class CampTest extends PHPUnit_Framework_TestCase
+class AmpImgTest extends PHPUnit_Framework_TestCase
 {
+    
     /**************************************************************************
      * AMP-IMG | AMP-ANIM
      **************************************************************************/
-    
+     
     public function ampImgProvider(){
         return array(
         
@@ -73,6 +74,7 @@ class CampTest extends PHPUnit_Framework_TestCase
         $this->assertContains('amp-anim', $camp->components);
     }
     
+    
     /**************************************************************************
      * AMP-AD
      **************************************************************************/
@@ -91,6 +93,29 @@ class CampTest extends PHPUnit_Framework_TestCase
       * @group amp-ad 
       */
     public function testAmpAd($html, $amp){
+        $camp = new Camp($html);
+        $this->assertEquals($amp, $camp->amp);
+    }
+    
+    
+    /**************************************************************************
+     * AMP-YOUTUBE
+     **************************************************************************/
+    
+    public function ampYoutubeProvider(){
+        return array(
+            array(
+                'lorem <iframe width="560" height="315" src="https://www.youtube.com/embed/VKBSCAXkUuY" frameborder="0" allowfullscreen></iframe> ipsum',
+                'lorem <amp-youtube width="560" height="315" data-videoid="VKBSCAXkUuY" layout="responsive"></amp-youtube> ipsum'
+            )
+        );
+    }
+    
+    /**
+     * @dataProvider ampYoutubeProvider
+     * @group amp-youtube
+     */
+    public function testAmpYoutube($html, $amp){
         $camp = new Camp($html);
         $this->assertEquals($amp, $camp->amp);
     }
