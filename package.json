@@ -1,0 +1,29 @@
+{
+  "name": "camp",
+  "version": "0.0.1",
+  "description": "Convert HTML main article to AMPHTML",
+  "main": "Camp.php",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "phpunit test/CampTest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/iqbalfn/camp.git"
+  },
+  "keywords": [
+    "amphtml",
+    "amp",
+    "html",
+    "converter",
+    "php"
+  ],
+  "author": "Iqbal Fauzi <iqbalfawz@gmail.com> (http://iqbalfn.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iqbalfn/camp/issues"
+  },
+  "homepage": "https://github.com/iqbalfn/camp#readme"
+}
