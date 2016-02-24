@@ -185,7 +185,7 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
      * @dataProvider ampTwitterProvider
      * @group amp-twitter
      */
-    public function testAmpTeitter($html, $amp){
+    public function testAmpTwitter($html, $amp){
         $camp = new Camp($html);
         $this->assertEquals($amp, $camp->amp);
     }
@@ -365,6 +365,10 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
             array(
                 'lorem <p style="text-align:center"></p> ipsum',
                 'lorem <p></p> ipsum'
+            ),
+            array(
+                'lorem <table cellspacing="5"></table> ipsum',
+                'lorem <table></table> ipsum'
             )
         );
      }

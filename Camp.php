@@ -151,6 +151,7 @@ class Camp
         // remove global prohibited attribute
         $prohibited_attrs = array(
             'align',
+            'cellspacing',
             'start',
             'style'
         );
@@ -446,7 +447,7 @@ class Camp
             return $this;
             
         for($i=($blockquotes->length-1); $i>=0; $i--){
-            $twitter = $blockquotes[$i];
+            $twitter = $blockquotes->item($i);
             if($twitter->getAttribute('class') != 'twitter-tweet')
                 continue;
             
