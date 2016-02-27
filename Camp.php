@@ -150,20 +150,25 @@ class Camp
     private function _cleanProhibitedAttribute(){
         // remove global prohibited attribute
         $prohibited_attrs = array(
-            'align',
-            'cellspacing',
-            'start',
-            'style'
+            'align' => '*',
+            'cellspacing' => '*',
+            'start' => '*',
+            'style' => '*',
+            'width' => array('td')
         );
         
         $xpath = new DOMXPath($this->doc);
         
-        foreach($prohibited_attrs as $attr){
+        foreach($prohibited_attrs as $attr => $tag){
             $els = $xpath->query("//*[@$attr]");
             if(!$els->length)
                 continue;
             
             foreach($els as $el){
+                $tag_name = $el->tagName;
+                if($tag != '*' && !in_array($tag_name, $tag))
+                    continue;
+                
                 if($el->hasAttribute($attr))
                     $el->removeAttribute($attr);
             }
