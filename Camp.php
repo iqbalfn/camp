@@ -86,7 +86,7 @@ class Camp
      */
     private function _cleanProhibitedTag(){
         $tags = array(
-            'script',   // except type is `application/ld+jxon`.
+            'script',   // The `application/ld+jxon` should be on head tag.
             'base',
             'frame',
             'frameset',
@@ -115,10 +115,7 @@ class Camp
             for($i=($els->length-1); $i>=0; $i--){
                 $el = $els->item($i);
                 
-                if($tag == 'script'){
-                    if($el->getAttribute('type') == 'application/ld+json')
-                        continue;
-                }elseif($tag == 'input'){
+                if($tag == 'input'){
                     if($el->getAttribute('type') == 'button')
                         continue;
                 }elseif($tag == 'link'){
@@ -267,6 +264,7 @@ class Camp
             return $this;
         
         $regexps = array(
+        
             '_makeAmpYoutube' => array(
                 'width' => 560,
                 'height'=> 314,
@@ -281,11 +279,12 @@ class Camp
                         'index' => 2
                     ),
                     array(
-                        'regex' => '/youtube.com\/embed\/([\w\-.]+)/i',
+                        'regex' => '/youtube\.com\/embed\/([\w\-.]+)/i',
                         'index' => 1
                     )
                 )
             ),
+            
             '_makeAmpFacebookVideo' => array(
                 'width' => 750,
                 'height'=> 472,
@@ -294,6 +293,18 @@ class Camp
                     array(
                         'regex' => '/https:\/\/www\.facebook\.com\/([^\/]+)\/videos\/([0-9]+)/i',
                         'index' => 0
+                    )
+                )
+            ),
+            
+            '_makeAmpVine' => array(
+                'width' => 600,
+                'height'=> 600,
+                
+                'regexps' => array(
+                    array(
+                        'regex' => '/vine\.co\/v\/([^\/]+)/',
+                        'index' => 1
                     )
                 )
             )
@@ -571,6 +582,27 @@ class Camp
         $this->_addComponent('amp-youtube');
         
         return $amp_youtube;
+    }
+    
+    /**
+     * Make amp-vine component
+     * @param string id Vine video id
+     * @param array attrs List of element attribute
+     * @return object amp-vine node
+     */
+    private function _makeAmpVine($id, $attrs){
+        unset($attrs['src']);
+        if(array_key_exists('frameborder', $attrs))
+            unset($attrs['frameborder']);
+        
+        $attrs['data-vineid'] = $id;
+        
+        $amp_vine = $this->doc->createElement('amp-vine');
+        $this->_setAttribute($amp_vine, $attrs);
+        
+        $this->_addComponent('amp-vine');
+        
+        return $amp_vine;
     }
     
     /**

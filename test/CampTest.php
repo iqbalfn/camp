@@ -213,6 +213,30 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($amp, $camp->amp);
     }
     
+    
+    /**************************************************************************
+     * AMP-VINE
+     **************************************************************************/
+    
+    public function ampVineProvider(){
+        return array(
+            array(
+                'lorem <iframe src="https://vine.co/v/iw7VxOJzut0/embed/simple" width="600" height="600" frameborder="0"></iframe><script src="https://platform.vine.co/static/scripts/embed.js"></script> ipsum',
+                'lorem <amp-vine width="600" height="600" data-vineid="iw7VxOJzut0"></amp-vine> ipsum'
+            )
+        );
+    }
+    
+    /**
+     * @dataProvider ampVineProvider
+     * @group amp-vine
+     */
+    public function testAmpVine($html, $amp){
+        $camp = new Camp($html);
+        $this->assertEquals($amp, $camp->amp);
+    }
+    
+    
     /**************************************************************************
      * PROHIBITED TAG
      **************************************************************************/
@@ -226,7 +250,7 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
             
             'should leave script with type application/ld+json' => array(
                 'lorem <script type="application/ld+json"></script> ipsum',
-                'lorem <script type="application/ld+json"></script> ipsum'
+                'lorem  ipsum'
             ),
             
             'should remove base tag' => array(
