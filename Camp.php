@@ -151,6 +151,7 @@ class Camp
             'cellspacing' => '*',
             'start' => '*',
             'style' => '*',
+            'summary' => array('table'),
             'width' => array('td')
         );
         

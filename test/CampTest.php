@@ -395,6 +395,10 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
                 'lorem <table></table> ipsum'
             ),
             array(
+                'lorem <table summary="5"></table> ipsum',
+                'lorem <table></table> ipsum'
+            ),
+            array(
                 'lorem <table><tbody><tr><td width="100"></td><td></td></tr></tbody></table> ipsum',
                 'lorem <table><tbody><tr><td></td><td></td></tr></tbody></table> ipsum'
             )
