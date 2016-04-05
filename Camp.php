@@ -541,9 +541,11 @@ class Camp
 
                 for($j=($video_child_count-1); $j>=0; $j--){
                     $child = $video->childNodes->item($j);
-                    if($child->nodeName == '#text')
-                        $placeholder[] = $child->textContent;
-                    elseif($child->nodeName == 'source')
+                    if($child->nodeName == '#text'){
+                        $text = trim($child->textContent);
+                        if($text)
+                            $placeholder[] = $text;
+                    }elseif($child->nodeName == 'source')
                         $amp_video->appendChild($child);
                 }
             }

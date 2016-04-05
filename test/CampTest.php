@@ -251,6 +251,10 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
                 'lorem <video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg">Your browser doesn\'t support HTML5 video</video> ipsum',
                 'lorem <amp-video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg"><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
             ),
+            'should convert video tag to amp-video and ignore space child' => array(
+                'lorem <video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg"> </video> ipsum',
+                'lorem <amp-video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg"></amp-video> ipsum'
+            ),
             'should convert video tag to amp-video include all sub-source' => array(
                 'lorem <video src="myvideo.mp4" width="400" height="300" controls><source src="movie.mp4" type="video/mp4">Your browser doesn\'t support HTML5 video</video> ipsum',
                 'lorem <amp-video src="myvideo.mp4" width="400" height="300" controls=""><source src="movie.mp4" type="video/mp4"></source><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
