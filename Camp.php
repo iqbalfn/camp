@@ -502,6 +502,67 @@ class Camp
     }
     
     /**
+     * Convert video tag
+     * @return $this
+     */
+    private function _convertVideo(){
+        $videos = $this->doc->getElementsByTagName('video');
+        if(!$videos->length)
+            return $this;
+        
+        for($i=($videos->length-1); $i>=0; $i--){
+            $video = $videos->item($i);
+            
+            $attr= $this->_getAttribute($video, array(
+                'src'      => false,
+                'width'    => true,
+                'height'   => true,
+                'poster'   => false,
+                'autoplay' => false,
+                'controls' => false,
+                'loop'     => false,
+                'muted'    => false
+            ));
+            
+            $attr['width'] = (int)$attr['width'];
+            $attr['height']= (int)$attr['height'];
+            
+            if(!$attr['width'])
+                $attr['width'] = $this->defaultWidth;
+            if(!$attr['height'])
+                $attr['height']= $this->defaultHeight;
+            
+            $amp_video = $this->doc->createElement('amp-video');
+            $this->_setAttribute($amp_video, $attr);
+            
+            $placeholder = [];
+            if($video->hasChildNodes()){
+                $video_child_count = $video->childNodes->length;
+
+                for($j=($video_child_count-1); $j>=0; $j--){
+                    $child = $video->childNodes->item($j);
+                    if($child->nodeName == '#text')
+                        $placeholder[] = $child->textContent;
+                    elseif($child->nodeName == 'source')
+                        $amp_video->appendChild($child);
+                }
+            }
+            
+            // html5 fallback
+            if($placeholder){
+                $div_placeholder = $this->doc->createElement('div');
+                $this->_setAttribute($div_placeholder, array('fallback'=>''));
+                $div_placeholder->textContent = implode(PHP_EOL, $placeholder);
+                $amp_video->appendChild($div_placeholder);
+            }
+            
+            $video->parentNode->replaceChild($amp_video, $video);
+        }
+        
+        return $this;
+    }
+    
+    /**
      * Get element attribute
      * @param object node The node where the attr taken.
      * @param array attrs attr-required pair of attribute to get.
@@ -638,6 +699,7 @@ class Camp
         $this->doc = HTML5_Parser::parse($html);
         
         $this
+            ->_convertVideo()
             ->_convertImg()
             ->_convertAd()
             ->_convertTwitter()

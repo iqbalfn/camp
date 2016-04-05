@@ -168,9 +168,8 @@ TODO
 find out how to define different layout.
 2. Remove unusable SVG syntax.
 3. `amp-ad`. Support another ad provider, currently only support AdSense.
-4. `amp-youtube`. Support for old youtube embed style ( which is i've no example to test )
-5. `amp-iframe`. Convert more iframe data, it can be facebook or other components.
-6. Support another components  
+4. `amp-youtube`. Support for old youtube embed style ( no example to test )
+5. Support another components  
 amp-access-spec  
 amp-audio  
 amp-brightcove  
@@ -188,7 +187,6 @@ amp-pinterest
 amp-pixel  
 amp-slides  
 amp-user-notification  
-amp-video  
 
 Bug?
 ----

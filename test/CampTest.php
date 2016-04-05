@@ -238,6 +238,41 @@ class AmpImgTest extends PHPUnit_Framework_TestCase
     
     
     /**************************************************************************
+     * AMP-VIDEO
+     **************************************************************************/
+    
+    public function ampVideoProvider(){
+        return array(
+            'should convert video tag to amp-video' => array(
+                'lorem <video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg" controls></video> ipsum',
+                'lorem <amp-video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg" controls=""></amp-video> ipsum'
+            ),
+            'should convert video tag to amp-video include placeholder' => array(
+                'lorem <video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg">Your browser doesn\'t support HTML5 video</video> ipsum',
+                'lorem <amp-video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg"><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
+            ),
+            'should convert video tag to amp-video include all sub-source' => array(
+                'lorem <video src="myvideo.mp4" width="400" height="300" controls><source src="movie.mp4" type="video/mp4">Your browser doesn\'t support HTML5 video</video> ipsum',
+                'lorem <amp-video src="myvideo.mp4" width="400" height="300" controls=""><source src="movie.mp4" type="video/mp4"></source><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
+            ),
+            'should convert video tag to amp-video include all sub-sources' => array(
+                'lorem <video src="myvideo.mp4" width="400" height="300"><source src="movie.mp4" type="video/mp4"><source src="movie.ogg" type="video/ogg">Your browser doesn\'t support HTML5 video</video> ipsum',
+                'lorem <amp-video src="myvideo.mp4" width="400" height="300"><source src="movie.ogg" type="video/ogg"></source><source src="movie.mp4" type="video/mp4"></source><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
+            )
+        );
+    }
+    
+    /**
+     * @dataProvider ampVideoProvider
+     * @group amp-video
+     */
+    public function testAmpVideo($html, $amp){
+        $camp = new Camp($html);
+        $this->assertEquals($amp, $camp->amp);
+    }
+    
+    
+    /**************************************************************************
      * PROHIBITED TAG
      **************************************************************************/
      
