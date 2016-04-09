@@ -527,6 +527,9 @@ class Camp
             $attr['width'] = (int)$attr['width'];
             $attr['height']= (int)$attr['height'];
             
+            // convert http(s):// to //
+            $attr['src'] = preg_replace('!^http(s?):!', '', $attr['src']);
+            
             if(!$attr['width'])
                 $attr['width'] = $this->defaultWidth;
             if(!$attr['height'])
@@ -545,8 +548,12 @@ class Camp
                         $text = trim($child->textContent);
                         if($text)
                             $placeholder[] = $text;
-                    }elseif($child->nodeName == 'source')
+                    }elseif($child->nodeName == 'source'){
                         $amp_video->appendChild($child);
+                        $child_src = $child->getAttribute('src');
+                        $child_src = preg_replace('!^http(s?):!', '', $child_src);
+                        $child->setAttribute('src', $child_src);
+                    }
                 }
             }
             
