@@ -187,6 +187,8 @@ amp-pinterest
 amp-pixel  
 amp-slides  
 amp-user-notification  
+6. `amp-video` too set default `poster` attribute.
+7. Remove `source` closing tag.
 
 Bug?
 ----

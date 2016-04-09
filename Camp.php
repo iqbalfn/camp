@@ -528,7 +528,8 @@ class Camp
             $attr['height']= (int)$attr['height'];
             
             // convert http(s):// to //
-            $attr['src'] = preg_replace('!^http(s?):!', '', $attr['src']);
+            if(array_key_exists('src', $attr))
+                $attr['src'] = preg_replace('!^http(s?):!', '', $attr['src']);
             
             if(!$attr['width'])
                 $attr['width'] = $this->defaultWidth;
