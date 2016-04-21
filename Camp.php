@@ -81,6 +81,17 @@ class Camp
     }
     
     /**
+     * Clean all invalid closing tag
+     * @return string
+     */
+    private function _cleanHTMLClosingTag($text){
+        $invalid_closing_tag = array(
+            '</source>'
+        );
+        return str_replace($invalid_closing_tag, '', $text);
+    }
+    
+    /**
      * Clean all prohibited tags
      * @return $this
      */
@@ -719,6 +730,7 @@ class Camp
             ->_cleanProhibitedAttribute();
         
         $amp = $this->doc->saveHTML();
+        $amp = $this->_cleanHTMLClosingTag($amp);
         preg_match('!^.+<body>(.+)</body>.+$!s', $amp, $m);
         $this->amp = $m[1];
         
