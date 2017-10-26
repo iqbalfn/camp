@@ -363,6 +363,9 @@ class Camp
                 $attrs['sandbox'] = 'allow-scripts allow-same-origin';
                 $attrs['layout'] = 'responsive';
                 
+                if(substr($attrs['src'], 0, 2) === '//')
+                    $attrs['src'] = 'https:' . $attrs['src'];
+                
                 // set http to https
                 if(substr($attrs['src'], 0, 5) !== 'https')
                     $attrs['src'] = preg_replace('!^http:!', 'https:', $attrs['src']);
