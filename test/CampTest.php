@@ -175,6 +175,29 @@ class AmpImgTest extends TestCase
     
     
     /**************************************************************************
+     * AMP-INSTAGRAM
+     **************************************************************************/
+     
+    public function ampInstagramProvider(){
+        return array(
+            'should convert instagram iframe embed to amp-instagram' => array(
+                'lorem <iframe src="//www.instagram.com/p/Bah_gHPDaK_/embed" width="520" height="616"></iframe> ipsum',
+                'lorem <amp-instagram width="520" height="616" data-shortcode="Bah_gHPDaK_" data-captioned="1" layout="responsive"></amp-instagram> ipsum'
+            )
+        );
+    }
+    
+    /**
+     * @dataProvider ampInstagramProvider
+     * @group amp-instagram
+     */
+    public function testAmpInstagram($html, $amp){
+        $camp = new Camp($html);
+        $this->assertEquals($amp, $camp->amp);
+    }
+    
+    
+    /**************************************************************************
      * AMP-TWITTER
      **************************************************************************/
     

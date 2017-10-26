@@ -309,6 +309,18 @@ class Camp
                 )
             ),
             
+            '_makeAmpInstagram' => array(
+                'width' => 320,
+                'height' => 320,
+                
+                'regexps' => array(
+                    array(
+                        'regex' => '/instagram\.com\/p\/([\w]+)/',
+                        'index' => 1
+                    )
+                )
+            ),
+            
             '_makeAmpVine' => array(
                 'width' => 600,
                 'height'=> 600,
@@ -606,12 +618,12 @@ class Camp
     /**
      * Make amp-facebook component
      * @param string id Facebook post URL
-     * @param array attrs List of element attribute
+     * @param array attrs List of element attributes
      * @return object amp-facebook node
      */
     private function _makeAmpFacebookPost($id, $attrs){
         unset($attrs['src']);
-        if(array_key_exists('frameborder', $attrs))
+        if(isset($attrs['frameborder']))
             unset($attrs['frameborder']);
         
         $attrs['layout'] = 'responsive';
@@ -628,12 +640,12 @@ class Camp
     /**
      * Make amp-facebook component
      * @param string id Facebook vidoe URL
-     * @param array attrs List of element attribute
+     * @param array attrs List of element attributes
      * @return object amp-facebook node
      */
     private function _makeAmpFacebookVideo($id, $attrs){
         unset($attrs['src']);
-        if(array_key_exists('frameborder', $attrs))
+        if(isset($attrs['frameborder']))
             unset($attrs['frameborder']);
         
         $attrs['layout'] = 'responsive';
@@ -649,14 +661,36 @@ class Camp
     }
     
     /**
+     * Make amp-instagram component
+     * @param string id Instagram post id 
+     * @param array attrs List of element attributes
+     * @return object amp-instagram node
+     */
+    private function _makeAmpInstagram($id, $attrs){
+        unset($attrs['src']);
+        if(isset($attrs['frameborder']))
+            unset($attrs['frameborder']);
+        
+        $attrs['data-shortcode'] = $id;
+        $attrs['data-captioned'] = true;
+        $attrs['layout'] = 'responsive';
+        
+        $amp_instagram = $this->doc->createElement('amp-instagram');
+        $this->_setAttribute($amp_instagram, $attrs);
+        $this->_addComponent('amp-instagram');
+        
+        return $amp_instagram;
+    }
+    
+    /**
      * Make amp-youtube component
      * @param string id Youtube video id
-     * @param array attrs List of element attribute
+     * @param array attrs List of element attributes
      * @return object amp-youtube node
      */
     private function _makeAmpYoutube($id, $attrs){
         unset($attrs['src']);
-        if(array_key_exists('frameborder', $attrs))
+        if(isset($attrs['frameborder']))
             unset($attrs['frameborder']);
         
         $attrs['data-videoid'] = $id;
@@ -673,12 +707,12 @@ class Camp
     /**
      * Make amp-vine component
      * @param string id Vine video id
-     * @param array attrs List of element attribute
+     * @param array attrs List of element attributes
      * @return object amp-vine node
      */
     private function _makeAmpVine($id, $attrs){
         unset($attrs['src']);
-        if(array_key_exists('frameborder', $attrs))
+        if(isset($attrs['frameborder']))
             unset($attrs['frameborder']);
         
         $attrs['data-vineid'] = $id;

@@ -178,7 +178,6 @@ amp-dynamic-css-classes
 amp-fit-text  
 amp-font  
 amp-image-lightbox  
-amp-instagram  
 amp-install-serviceworker  
 amp-lightbox  
 amp-list  
