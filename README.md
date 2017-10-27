@@ -149,6 +149,11 @@ If no way to find image size, use this size instead. Default 300.
 
 If no way to find image size, use this size instead. Default 200.
 
+### iframePlaceholder *string*
+
+Default image to use as `amp-iframe` image placeholder. The image is an `amp-img`
+with attribute `layout=fill`.
+
 Dependencies
 ------------
 
@@ -164,12 +169,10 @@ don't you?
 TODO
 ----
 
-1. All `amp-img`/`amp-anim` attribute `layout` always `responsive`. Need to
-find out how to define different layout.
-2. Remove unusable SVG syntax.
-3. `amp-ad`. Support another ad provider, currently only support AdSense.
-4. `amp-youtube`. Support for old youtube embed style ( no example to test )
-5. Support another components  
+1. Remove unusable SVG syntax.
+1. `amp-ad`. Support another ad provider, currently only support AdSense.
+1. `amp-youtube`. Support for old youtube embed style ( no example to test )
+1. Support another components  
 amp-access-spec  
 amp-audio  
 amp-brightcove  
@@ -186,7 +189,7 @@ amp-pinterest
 amp-pixel  
 amp-slides  
 amp-user-notification  
-6. `amp-video` too set default `poster` attribute.
+1. `amp-video` too set default `poster` attribute.
 
 Bug?
 ----

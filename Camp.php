@@ -60,6 +60,12 @@ class Camp
     public $defaultHeight = 200;
     
     /**
+     * iFrame image placeholder
+     * @var string
+     */
+    public $iframePlaceholder;
+    
+    /**
      * Constructor
      * @param string html The HTML content.
      * @param array options List of options.
@@ -370,6 +376,7 @@ class Camp
                 }
             }
             
+            // nah, no component fount, let just create amp-iframe
             if(!$amp_el){
                 $this->_addComponent('amp-iframe');
                 $attrs['sandbox'] = 'allow-scripts allow-same-origin';
@@ -384,6 +391,17 @@ class Camp
                 
                 $amp_el = $this->doc->createElement('amp-iframe');
                 $this->_setAttribute($amp_el, $attrs);
+                
+                // do we've 'iframePlaceholder'?
+                if($this->iframePlaceholder){
+                    $amp_img = $this->doc->createElement('amp-img');
+                    $this->_setAttribute($amp_img, [
+                        'layout'      => 'fill',
+                        'src'         => $this->iframePlaceholder,
+                        'placeholder' =>'placeholder'
+                    ]);
+                    $amp_el->appendChild($amp_img);
+                }
             }
             
             if($amp_el)
@@ -464,7 +482,6 @@ class Camp
             if(!$attr['height'])
                 $attr['height']= $this->defaultHeight;
             
-            // TODO findout how to use different layout type
             $attr['layout'] = 'responsive';
             
             $tag = preg_match('!\.gif$!', $attr['src']) ? 'amp-anim' : 'amp-img';

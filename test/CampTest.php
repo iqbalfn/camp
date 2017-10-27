@@ -160,6 +160,11 @@ class AmpImgTest extends TestCase
             'should fill iframe size' => array(
                 'lorem <iframe src="https://foo.com/iframe"></iframe> ipsum',
                 'lorem <amp-iframe src="https://foo.com/iframe" width="300" height="200" sandbox="allow-scripts allow-same-origin" layout="responsive"></amp-iframe> ipsum'
+            ),
+            'should add image placeholder' => array(
+                'lorem <iframe src="https://foo.com/iframe"></iframe> ipsum',
+                'lorem <amp-iframe src="https://foo.com/iframe" width="300" height="200" sandbox="allow-scripts allow-same-origin" layout="responsive"><amp-img layout="fill" src="/images/placeholder.png" placeholder="placeholder"></amp-img></amp-iframe> ipsum',
+                ['iframePlaceholder' => '/images/placeholder.png']
             )
         );
      }
@@ -168,8 +173,8 @@ class AmpImgTest extends TestCase
       * @dataProvider ampIFrameProvider
       * @group amp-iframe
       */
-    public function testAmpIFrame($html, $amp){
-        $camp = new Camp($html);
+    public function testAmpIFrame($html, $amp, $opts=null){
+        $camp = new Camp($html, $opts);
         $this->assertEquals($amp, $camp->amp);
     }
     
