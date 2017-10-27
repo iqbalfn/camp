@@ -498,6 +498,49 @@ class Camp
     }
     
     /**
+     * Convert instagram
+     * @return $this
+     */
+    private function _convertInstagram(){
+        $blockquotes = $this->doc->getElementsByTagName('blockquote');
+        if(!$blockquotes->length)
+            return $this;
+        
+        for($i=($blockquotes->length-1); $i>=0; $i--){
+            $blockquote = $blockquotes->item($i);
+            if($blockquote->getAttribute('class') != 'instagram-media')
+                continue;
+            
+            $anchor = $blockquote->getElementsByTagName('a');
+            if(!$anchor->length)
+                continue;
+            
+            $anchor = $anchor->item(($anchor->length-1));
+            
+            $instagram_id = null;
+            $regex = '!instagram\.com\/p\/([\w]+)!';
+            if(preg_match($regex, $anchor->getAttribute('href'), $m))
+                $instagram_id = $m[1];
+            
+            if(!$instagram_id)
+                continue;
+            
+            $attrs = array(
+                'width' => 320,
+                'height'=> 320
+            );
+            
+            $with_caption = $blockquote->hasAttribute('data-instgrm-captioned');
+            
+            $amp_instagram = $this->_makeAmpInstagram($instagram_id, $attrs, $with_caption);
+            
+            $blockquote->parentNode->replaceChild($amp_instagram, $blockquote);
+        }
+        
+        return $this;
+    }
+    
+    /**
      * Convert twitter embed
      * @return $this
      */
@@ -507,11 +550,11 @@ class Camp
             return $this;
             
         for($i=($blockquotes->length-1); $i>=0; $i--){
-            $twitter = $blockquotes->item($i);
-            if($twitter->getAttribute('class') != 'twitter-tweet')
+            $blockquote = $blockquotes->item($i);
+            if($blockquote->getAttribute('class') != 'twitter-tweet')
                 continue;
             
-            $anchor = $twitter->getElementsByTagName('a');
+            $anchor = $blockquote->getElementsByTagName('a');
             if(!$anchor->length)
                 continue;
             
@@ -536,7 +579,7 @@ class Camp
             
             $this->_setAttribute($amp_twitter, $attrs);
             
-            $twitter->parentNode->replaceChild($amp_twitter, $twitter);
+            $blockquote->parentNode->replaceChild($amp_twitter, $blockquote);
             
             $this->_addComponent('amp-twitter');
         }
@@ -683,13 +726,14 @@ class Camp
      * @param array attrs List of element attributes
      * @return object amp-instagram node
      */
-    private function _makeAmpInstagram($id, $attrs){
+    private function _makeAmpInstagram($id, $attrs, $caption=true){
         unset($attrs['src']);
         if(isset($attrs['frameborder']))
             unset($attrs['frameborder']);
         
         $attrs['data-shortcode'] = $id;
-        $attrs['data-captioned'] = true;
+        if($caption)
+            $attrs['data-captioned'] = 'data-captioned';
         $attrs['layout'] = 'responsive';
         
         $amp_instagram = $this->doc->createElement('amp-instagram');
@@ -779,6 +823,7 @@ class Camp
             ->_convertAd()
             ->_convertTwitter()
             ->_convertFacebook()
+            ->_convertInstagram()
             ->_convertIframe()
             ->_cleanProhibitedTag()
             ->_cleanProhibitedAttribute();

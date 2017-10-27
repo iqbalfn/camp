@@ -187,7 +187,19 @@ class AmpImgTest extends TestCase
         return array(
             'should convert instagram iframe embed to amp-instagram' => array(
                 'lorem <iframe src="//www.instagram.com/p/Bah_gHPDaK_/embed" width="520" height="616"></iframe> ipsum',
-                'lorem <amp-instagram width="520" height="616" data-shortcode="Bah_gHPDaK_" data-captioned="1" layout="responsive"></amp-instagram> ipsum'
+                'lorem <amp-instagram width="520" height="616" data-shortcode="Bah_gHPDaK_" data-captioned="data-captioned" layout="responsive"></amp-instagram> ipsum'
+            ),
+            'should convert minimal istagram embed to amp-instagram' => array(
+                'lorem <blockquote class="instagram-media" data-instgrm-captioned="" data-instgrm-version="7"><a href="https://www.instagram.com/p/Bah_gHPDaK_" target="_blank"></a></blockquote> ipsum',
+                'lorem <amp-instagram width="320" height="320" data-shortcode="Bah_gHPDaK_" data-captioned="data-captioned" layout="responsive"></amp-instagram> ipsum'
+            ),
+            'should convert original instagram embed to amp-instagram' => array(
+                'lorem '.file_get_contents(__DIR__.'/static/instagram-default.txt').' ipsum',
+                'lorem <amp-instagram width="320" height="320" data-shortcode="Bah_gHPDaK_" data-captioned="data-captioned" layout="responsive"></amp-instagram> ipsum'
+            ),
+            'should convert without caption instagram embed to amp-instagram' => array(
+                'lorem '.file_get_contents(__DIR__.'/static/instagram-without-caption.txt').' ipsum',
+                'lorem <amp-instagram width="320" height="320" data-shortcode="Bah_gHPDaK_" layout="responsive"></amp-instagram> ipsum'
             )
         );
     }
