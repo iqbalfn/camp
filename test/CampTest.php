@@ -291,27 +291,27 @@ class AmpImgTest extends TestCase
         return array(
             'should convert video tag to amp-video' => array(
                 'lorem <video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg" controls></video> ipsum',
-                'lorem <amp-video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg" controls=""></amp-video> ipsum'
+                'lorem <amp-video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg" controls="" layout="responsive"></amp-video> ipsum'
             ),
             'should convert video tag to amp-video include placeholder' => array(
                 'lorem <video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg">Your browser doesn\'t support HTML5 video</video> ipsum',
-                'lorem <amp-video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg"><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
+                'lorem <amp-video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg" layout="responsive"><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
             ),
             'should convert video tag to amp-video and ignore space child' => array(
                 'lorem <video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg"> </video> ipsum',
-                'lorem <amp-video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg"></amp-video> ipsum'
+                'lorem <amp-video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg" layout="responsive"></amp-video> ipsum'
             ),
             'should convert video tag to amp-video include all sub-source' => array(
                 'lorem <video src="myvideo.mp4" width="400" height="300" controls><source src="movie.mp4" type="video/mp4">Your browser doesn\'t support HTML5 video</video> ipsum',
-                'lorem <amp-video src="myvideo.mp4" width="400" height="300" controls=""><source src="movie.mp4" type="video/mp4"><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
+                'lorem <amp-video src="myvideo.mp4" width="400" height="300" controls="" layout="responsive"><source src="movie.mp4" type="video/mp4"><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
             ),
             'should convert video tag to amp-video include all sub-sources' => array(
                 'lorem <video src="myvideo.mp4" width="400" height="300"><source src="movie.mp4" type="video/mp4"><source src="movie.ogg" type="video/ogg">Your browser doesn\'t support HTML5 video</video> ipsum',
-                'lorem <amp-video src="myvideo.mp4" width="400" height="300"><source src="movie.ogg" type="video/ogg"><source src="movie.mp4" type="video/mp4"><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
+                'lorem <amp-video src="myvideo.mp4" width="400" height="300" layout="responsive"><source src="movie.ogg" type="video/ogg"><source src="movie.mp4" type="video/mp4"><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
             ),
             'should convert video tag src attribute to relative protocol' => array(
                 'lorem <video src="http://www.google.com/myvideo.mp4" width="400" height="300"><source src="http://www.google.com/movie.mp4" type="video/mp4">Your browser doesn\'t support HTML5 video</video> ipsum',
-                'lorem <amp-video src="//www.google.com/myvideo.mp4" width="400" height="300"><source src="//www.google.com/movie.mp4" type="video/mp4"><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
+                'lorem <amp-video src="//www.google.com/myvideo.mp4" width="400" height="300" layout="responsive"><source src="//www.google.com/movie.mp4" type="video/mp4"><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
             )
         );
     }

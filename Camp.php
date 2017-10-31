@@ -610,6 +610,8 @@ class Camp
                 'muted'    => false
             ));
             
+            $attr['layout'] = 'responsive';
+            
             $attr['width'] = (int)$attr['width'];
             $attr['height']= (int)$attr['height'];
             
