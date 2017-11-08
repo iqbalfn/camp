@@ -247,17 +247,28 @@ class Camp
                 }
                 
                 $class = $div->getAttribute('class');
+                $width = $div->getAttribute('data-width');
+                if(!$width)
+                    $width = $div->getAttribute('width');
+                if(!$width)
+                    $width = 486;
+                
+                $height = $div->getAttribute('data-height');
+                if(!$height)
+                    $height = $div->getAttribute('height');
+                if(!$height)
+                    $height = 657;
+                
+                $attrs = array('width'=>$width, 'height'=>$height);
+                
                 if($class == 'fb-post' || $class == 'fb-video'){
                     $fb_href = $div->getAttribute('data-href');
                     $is_video = preg_match('/videos/', $fb_href);
                     $method = '_makeAmpFacebookPost';
-                    $attrs = array('width'=>486, 'height'=>657);
                     
-                    if($is_video){
+                    if($is_video)
                         $method = '_makeAmpFacebookVideo';
-                        $attrs = array('width'=>552, 'height'=>574);
-                    }
-                    
+                        
                     if(substr($fb_href, 0, 6) != 'https:')
                         $fb_href = 'https://www.facebook.com/' . ltrim($fb_href, '/');
                     
@@ -304,13 +315,33 @@ class Camp
             ),
             
             '_makeAmpFacebookVideo' => array(
-                'width' => 750,
-                'height'=> 472,
+                'width' => 486,
+                'height'=> 657,
                 
                 'regexps' => array(
                     array(
                         'regex' => '/https:\/\/www\.facebook\.com\/([^\/]+)\/videos\/([0-9]+)/i',
                         'index' => 0
+                    ),
+                    array(
+                        'regex' => '/https:\/\/www\.facebook\.com\/.+video\.php\?href=([^&]+)/i',
+                        'index' => 1
+                    )
+                )
+            ),
+            
+            '_makeAmpFacebookPost' => array(
+                'width' => 486,
+                'height'=> 657,
+                
+                'regexps' => array(
+                    array(
+                        'regex' => '/https:\/\/www\.facebook\.com\/([^\/]+)\/posts\/([0-9]+)/i',
+                        'index' => 0
+                    ),
+                    array(
+                        'regex' => '/https:\/\/www\.facebook\.com\/.+post\.php\?href=([^&]+)/i',
+                        'index' => 1
                     )
                 )
             ),
@@ -357,7 +388,13 @@ class Camp
             if(!$attrs['height'])
                 $attrs['height'] = $this->defaultHeight;
             
-            $src = $attrs['src'];
+            // set absolute protocol
+            if(substr($attrs['src'], 0, 2) === '//')
+                $attrs['src'] = 'https:' . $attrs['src'];
+            
+            // set http to https
+            if(substr($attrs['src'], 0, 5) !== 'https')
+                $attrs['src'] = preg_replace('!^http:!', 'https:', $attrs['src']);
             
             $amp_el = null;
             
@@ -370,7 +407,8 @@ class Camp
                         if(!$attrs['height'])
                             $attrs['height'] = $rule['height'];
                         
-                        $amp_el = $this->$method($m[$re['index']], $attrs);
+                        $id = urldecode($m[$re['index']]);
+                        $amp_el = $this->$method($id, $attrs);
                         break 2;
                     }
                 }
@@ -381,13 +419,6 @@ class Camp
                 $this->_addComponent('amp-iframe');
                 $attrs['sandbox'] = 'allow-scripts allow-same-origin';
                 $attrs['layout'] = 'responsive';
-                
-                if(substr($attrs['src'], 0, 2) === '//')
-                    $attrs['src'] = 'https:' . $attrs['src'];
-                
-                // set http to https
-                if(substr($attrs['src'], 0, 5) !== 'https')
-                    $attrs['src'] = preg_replace('!^http:!', 'https:', $attrs['src']);
                 
                 $amp_el = $this->doc->createElement('amp-iframe');
                 $this->_setAttribute($amp_el, $attrs);

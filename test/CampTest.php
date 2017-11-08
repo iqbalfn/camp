@@ -108,19 +108,31 @@ class AmpImgTest extends TestCase
         return array(
             array(
                 'lorem <div id="fb-root"></div><script>(function(d, s, id) {  var js, fjs = d.getElementsByTagName(s)[0];  if (d.getElementById(id)) return;  js = d.createElement(s); js.id = id;  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";  fjs.parentNode.insertBefore(js, fjs);}(document, \'script\', \'facebook-jssdk\'));</script><div class="fb-post" data-href="https://www.facebook.com/zuck/posts/10102593740125791" data-width="500"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/zuck/posts/10102593740125791"><p>February 4 is Facebook&#x2019;s 12th birthday!Our anniversary has a lot of meaning to me as an opportunity to reflect on how...</p>Posted by <a href="https://www.facebook.com/zuck">Mark Zuckerberg</a> on&nbsp;<a href="https://www.facebook.com/zuck/posts/10102593740125791">Tuesday, January 12, 2016</a></blockquote></div></div> ipsum',
-                'lorem <amp-facebook width="486" height="657" layout="responsive" data-href="https://www.facebook.com/zuck/posts/10102593740125791"></amp-facebook> ipsum'
+                'lorem <amp-facebook width="500" height="657" layout="responsive" data-href="https://www.facebook.com/zuck/posts/10102593740125791"></amp-facebook> ipsum'
             ),
             array(
                 'lorem <div id="fb-root"></div><script>(function(d, s, id) {  var js, fjs = d.getElementsByTagName(s)[0];  if (d.getElementById(id)) return;  js = d.createElement(s); js.id = id;  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";  fjs.parentNode.insertBefore(js, fjs);}(document, \'script\', \'facebook-jssdk\'));</script><div class="fb-post" data-href="https://www.facebook.com/zuck/videos/10102509264909801/" data-width="500"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/zuck/videos/10102509264909801/"><p>I want to share a few more thoughts on the Chan Zuckerberg Initiative before I just start posting photos of me and Max...</p>Posted by <a href="https://www.facebook.com/zuck">Mark Zuckerberg</a> on&nbsp;<a href="https://www.facebook.com/zuck/videos/10102509264909801/">Friday, December 4, 2015</a></blockquote></div></div> ipsum',
-                'lorem <amp-facebook width="552" height="574" layout="responsive" data-embed-as="video" data-href="https://www.facebook.com/zuck/videos/10102509264909801/"></amp-facebook> ipsum'
+                'lorem <amp-facebook width="500" height="657" layout="responsive" data-embed-as="video" data-href="https://www.facebook.com/zuck/videos/10102509264909801/"></amp-facebook> ipsum'
             ),
             array(
-                'lorem <iframe width="750" height="472" allowfullscreen="allowfullscreen" src="https://www.facebook.com/v2.5/plugins/video.php?href=https://www.facebook.com/syahranazrah.allang/videos/1137021029650553/"></iframe> ipsum',
-                'lorem <amp-facebook width="750" height="472" layout="responsive" data-embed-as="video" data-href="https://www.facebook.com/syahranazrah.allang/videos/1137021029650553"></amp-facebook> ipsum'
+                'lorem <iframe width="476" height="476" allowfullscreen="allowfullscreen" src="https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/FacebookIndonesia/videos/1078475638956142/&show_text=0&width=476"></iframe> ipsum',
+                'lorem <amp-facebook width="476" height="476" layout="responsive" data-embed-as="video" data-href="https://www.facebook.com/FacebookIndonesia/videos/1078475638956142"></amp-facebook> ipsum'
+            ),
+            array(
+                'lorem <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FFacebookIndonesia%2Fvideos%2F1078475638956142%2F&show_text=0&width=476" width="476" height="476" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe> ipsum',
+                'lorem <amp-facebook width="476" height="476" layout="responsive" data-embed-as="video" data-href="https://www.facebook.com/FacebookIndonesia/videos/1078475638956142/"></amp-facebook> ipsum'
+            ),
+            array(
+                'lorem <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fzuck%2Fposts%2F10102593740125791&width=500" width="500" height="283" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe> ipsum',
+                'lorem <amp-facebook width="500" height="283" layout="responsive" data-href="https://www.facebook.com/zuck/posts/10102593740125791"></amp-facebook> ipsum'
             ),
             array(
                 'lorem <div class="fb-video" data-allowfullscreen="1" data-href="/MiaChibbie/videos/vb.100003034897952/835741256537030/?type=3">&nbsp;</div> ipsum',
-                'lorem <amp-facebook width="552" height="574" layout="responsive" data-embed-as="video" data-href="https://www.facebook.com/MiaChibbie/videos/vb.100003034897952/835741256537030/?type=3"></amp-facebook> ipsum'
+                'lorem <amp-facebook width="486" height="657" layout="responsive" data-embed-as="video" data-href="https://www.facebook.com/MiaChibbie/videos/vb.100003034897952/835741256537030/?type=3"></amp-facebook> ipsum'
+            ),
+            array(
+                'lorem <iframe src="//www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fnikkigandangreynapalma%2Fposts%2F1709386189095516&amp;width=500" width="500" height="793"></iframe> ipsum',
+                'lorem <amp-facebook width="500" height="793" layout="responsive" data-href="https://www.facebook.com/nikkigandangreynapalma/posts/1709386189095516"></amp-facebook> ipsum'
             )
         );
      }

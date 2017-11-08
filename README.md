@@ -11,9 +11,6 @@ Due to complicated processing in background, I suggest you to not to use the
 library for every user request. Cache the result or save it to DB instead of
 convert it everytime user ask for it.
 
-**Warning**: This project still under heavy-development as the 
-[ampproject](https://www.ampproject.org/) it self still in active development.
-
 Usage
 -----
 
@@ -171,24 +168,16 @@ TODO
 
 1. Remove unusable SVG syntax.
 1. `amp-ad`. Support another ad provider, currently only support AdSense.
-1. `amp-youtube`. Support for old youtube embed style ( no example to test )
 1. Support another components  
-amp-access-spec  
 amp-audio  
 amp-brightcove  
 amp-carousel  
-amp-dynamic-css-classes  
-amp-fit-text  
-amp-font  
 amp-image-lightbox  
-amp-install-serviceworker  
 amp-lightbox  
 amp-list  
 amp-mustache  
 amp-pinterest  
-amp-pixel  
 amp-slides  
-amp-user-notification  
 1. `amp-video` too set default `poster` attribute.
 
 Bug?
