@@ -582,7 +582,8 @@ class Camp
             
         for($i=($blockquotes->length-1); $i>=0; $i--){
             $blockquote = $blockquotes->item($i);
-            if($blockquote->getAttribute('class') != 'twitter-tweet')
+            $bqclass = $blockquote->getAttribute('class');
+            if($bqclass != 'twitter-tweet' && $bqclass != 'twitter-video')
                 continue;
             
             $anchor = $blockquote->getElementsByTagName('a');
@@ -604,8 +605,7 @@ class Camp
                 'width' => 486,
                 'height'=> 657,
                 'layout'=> 'responsive',
-                'data-tweetid' => $twitter_id,
-                'data-cards' => 'hidden'
+                'data-tweetid' => $twitter_id
             );
             
             $this->_setAttribute($amp_twitter, $attrs);

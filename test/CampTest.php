@@ -234,7 +234,11 @@ class AmpImgTest extends TestCase
         return array(
             array(
                 'lorem <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">32. <a href="https://twitter.com/officialR5">@officialR5</a> - Dark Side<a href="https://twitter.com/hashtag/FLIGHT40?src=hash">#FLIGHT40</a><a href="https://twitter.com/hashtag/CumaDiArdan?src=hash">#CumaDiArdan</a> <a href="https://t.co/z7BrNJllHl">pic.twitter.com/z7BrNJllHl</a></p>&mdash; 105.9 FM ARDAN Radio (@ardanradio) <a href="https://twitter.com/ardanradio/status/698353355203092480">February 13, 2016</a></blockquote><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> ipsum',
-                'lorem <amp-twitter width="486" height="657" layout="responsive" data-tweetid="698353355203092480" data-cards="hidden"></amp-twitter> ipsum'
+                'lorem <amp-twitter width="486" height="657" layout="responsive" data-tweetid="698353355203092480"></amp-twitter> ipsum'
+            ),
+            array(
+                'lorem <blockquote class="twitter-video" data-lang="en"><p lang="en" dir="ltr">Roy Halladay tosses a postseason no-hitter in his first postseason appearance. Rest In Peace, Doc. (2010) <a href="https://t.co/tjprU2N8Hh">pic.twitter.com/tjprU2N8Hh</a></p>&mdash; Vintage Sports (@VintageSports_) <a href="https://twitter.com/VintageSports_/status/928025269666844672?ref_src=twsrc%5Etfw">November 7, 2017</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> ipsum',
+                'lorem <amp-twitter width="486" height="657" layout="responsive" data-tweetid="928025269666844672"></amp-twitter> ipsum'
             )
         );
     }
