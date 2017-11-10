@@ -66,16 +66,6 @@ class AmpImgTest extends TestCase
         $this->assertEquals($amp, $camp->amp);
     }
     
-    /**
-     * @group amp-image
-     */
-    public function testAmpAnim(){
-        $html = 'lorem <img src="lorem.gif" width="350" height="150" alt=""> ipsum';
-        $camp = new Camp($html);
-        
-        $this->assertContains('amp-anim', $camp->components);
-    }
-    
     
     /**************************************************************************
      * AMP-AD
@@ -133,6 +123,10 @@ class AmpImgTest extends TestCase
             array(
                 'lorem <iframe src="//www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fnikkigandangreynapalma%2Fposts%2F1709386189095516&amp;width=500" width="500" height="793"></iframe> ipsum',
                 'lorem <amp-facebook width="500" height="793" layout="responsive" data-href="https://www.facebook.com/nikkigandangreynapalma/posts/1709386189095516"></amp-facebook> ipsum'
+            ),
+            array(
+                'lorem <div class="fb-video" data-allowfullscreen="true" data-href="https://www.facebook.com/ary.odan/videos/1038625656192187" data-show-text="false" data-width="auto"></div> ipsum',
+                'lorem <amp-facebook width="486" height="657" layout="responsive" data-embed-as="video" data-href="https://www.facebook.com/ary.odan/videos/1038625656192187"></amp-facebook> ipsum'
             )
         );
      }
@@ -262,6 +256,10 @@ class AmpImgTest extends TestCase
             array(
                 'lorem <iframe width="560" height="315" src="https://www.youtube.com/embed/VKBSCAXkUuY" frameborder="0" allowfullscreen></iframe> ipsum',
                 'lorem <amp-youtube width="560" height="315" data-videoid="VKBSCAXkUuY" layout="responsive"></amp-youtube> ipsum'
+            ),
+            array(
+                'lorem <object width="640" height="390"><param name="movie" value="https://www.youtube.com/v/atI4JKFQYoU"></param><param name="allowScriptAccess" value="always"></param><embed src="https://www.youtube.com/v/atI4JKFQYoU" type="application/x-shockwave-flash" allowscriptaccess="always" width="422" height="258"></embed></object> ipsum',
+                'lorem <amp-youtube width="640" height="390" data-videoid="atI4JKFQYoU" layout="responsive"></amp-youtube> ipsum'
             )
         );
     }
@@ -328,6 +326,11 @@ class AmpImgTest extends TestCase
             'should convert video tag src attribute to relative protocol' => array(
                 'lorem <video src="http://www.google.com/myvideo.mp4" width="400" height="300"><source src="http://www.google.com/movie.mp4" type="video/mp4">Your browser doesn\'t support HTML5 video</video> ipsum',
                 'lorem <amp-video src="//www.google.com/myvideo.mp4" width="400" height="300" layout="responsive"><source src="//www.google.com/movie.mp4" type="video/mp4"><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum'
+            ),
+            'should set default poster #poster' => array(
+                'lorem <video src="http://www.google.com/myvideo.mp4" width="400" height="300"><source src="http://www.google.com/movie.mp4" type="video/mp4">Your browser doesn\'t support HTML5 video</video> ipsum',
+                'lorem <amp-video src="//www.google.com/myvideo.mp4" width="400" height="300" layout="responsive" poster="/media/video.jpg"><source src="//www.google.com/movie.mp4" type="video/mp4"><div fallback="">Your browser doesn\'t support HTML5 video</div></amp-video> ipsum',
+                ['videoPoster' => '/media/video.jpg']
             )
         );
     }
@@ -336,8 +339,8 @@ class AmpImgTest extends TestCase
      * @dataProvider ampVideoProvider
      * @group amp-video
      */
-    public function testAmpVideo($html, $amp){
-        $camp = new Camp($html);
+    public function testAmpVideo($html, $amp, $opt=[]){
+        $camp = new Camp($html, $opt);
         $this->assertEquals($amp, $camp->amp);
     }
     
@@ -519,4 +522,35 @@ class AmpImgTest extends TestCase
         $camp = new Camp($html);
         $this->assertEquals($amp, $camp->amp);
     }
+    
+    
+    /**************************************************************************
+     * COMPONENTS EXISTENCE
+     **************************************************************************/
+     
+     public function componentExistenceProvider(){
+        return array(
+            'amp-anim' => array(
+                'lorem <img src="lorem.gif" width="350" height="150" alt=""> ipsum',
+                'amp-anim'
+            ),
+            'amp-video' => array(
+                'lorem <video src="myvideo.mp4" width="400" height="300" poster="myvideo-poster.jpg" controls></video> ipsum',
+                'amp-video'
+            ),
+            'amp-youtube' => array(
+                'lorem <iframe width="560" height="315" src="https://www.youtube.com/embed/VKBSCAXkUuY" frameborder="0" allowfullscreen></iframe> ipsum',
+                'amp-youtube'
+            )
+        );
+     }
+     
+     /**
+     * @dataProvider componentExistenceProvider
+     * @group component
+     */
+     public function testComponentExistence($html, $comp){
+        $camp = new Camp($html);
+        $this->assertContains($comp, $camp->components);
+     }
 }

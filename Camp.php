@@ -66,6 +66,100 @@ class Camp
     public $iframePlaceholder;
     
     /**
+     * Default video poster
+     * @var string
+     */
+    public $videoPoster;
+    
+    /**
+     * List of regex matcher
+     * @var array
+     */
+    private $regexps = array(
+        
+        '_makeAmpYoutube' => array(
+            'childs' => ['param', 'embed'],
+            'width' => 560,
+            'height'=> 314,
+            
+            'regexps' => array(
+                array(
+                    'regex' => '/youtu\.be\/([\w\-.]+)/',
+                    'index' => 1
+                ),
+                array(
+                    'regex' => '/youtube\.com(.+)v=([^&]+)/',
+                    'index' => 2
+                ),
+                array(
+                    'regex' => '/youtube\.com\/embed\/([\w\-.]+)/i',
+                    'index' => 1
+                ),
+                array(
+                    'regex' => '/youtube\.com\/v\/([\w\-.]+)/',
+                    'index' => 1
+                )
+            )
+        ),
+        
+        '_makeAmpFacebookVideo' => array(
+            'width' => 486,
+            'height'=> 657,
+            
+            'regexps' => array(
+                array(
+                    'regex' => '/https:\/\/www\.facebook\.com\/([^\/]+)\/videos\/([0-9]+)/i',
+                    'index' => 0
+                ),
+                array(
+                    'regex' => '/https:\/\/www\.facebook\.com\/.+video\.php\?href=([^&]+)/i',
+                    'index' => 1
+                )
+            )
+        ),
+        
+        '_makeAmpFacebookPost' => array(
+            'width' => 486,
+            'height'=> 657,
+            
+            'regexps' => array(
+                array(
+                    'regex' => '/https:\/\/www\.facebook\.com\/([^\/]+)\/posts\/([0-9]+)/i',
+                    'index' => 0
+                ),
+                array(
+                    'regex' => '/https:\/\/www\.facebook\.com\/.+post\.php\?href=([^&]+)/i',
+                    'index' => 1
+                )
+            )
+        ),
+        
+        '_makeAmpInstagram' => array(
+            'width' => 320,
+            'height' => 320,
+            
+            'regexps' => array(
+                array(
+                    'regex' => '/instagram\.com\/p\/([\w]+)/',
+                    'index' => 1
+                )
+            )
+        ),
+        
+        '_makeAmpVine' => array(
+            'width' => 600,
+            'height'=> 600,
+            
+            'regexps' => array(
+                array(
+                    'regex' => '/vine\.co\/v\/([^\/]+)/',
+                    'index' => 1
+                )
+            )
+        )
+    );
+    
+    /**
      * Constructor
      * @param string html The HTML content.
      * @param array options List of options.
@@ -192,6 +286,7 @@ class Camp
         return $this;
     }
     
+    
     /**
      * Convert various ad to amp-ad 
      * @return $this
@@ -250,7 +345,7 @@ class Camp
                 $width = $div->getAttribute('data-width');
                 if(!$width)
                     $width = $div->getAttribute('width');
-                if(!$width)
+                if(!$width || $width == 'auto')
                     $width = 486;
                 
                 $height = $div->getAttribute('data-height');
@@ -292,85 +387,6 @@ class Camp
         if(!$iframes->length)
             return $this;
         
-        $regexps = array(
-        
-            '_makeAmpYoutube' => array(
-                'width' => 560,
-                'height'=> 314,
-                
-                'regexps' => array(
-                    array(
-                        'regex' => '/youtu\.be\/([\w\-.]+)/',
-                        'index' => 1
-                    ),
-                    array(
-                        'regex' => '/youtube\.com(.+)v=([^&]+)/',
-                        'index' => 2
-                    ),
-                    array(
-                        'regex' => '/youtube\.com\/embed\/([\w\-.]+)/i',
-                        'index' => 1
-                    )
-                )
-            ),
-            
-            '_makeAmpFacebookVideo' => array(
-                'width' => 486,
-                'height'=> 657,
-                
-                'regexps' => array(
-                    array(
-                        'regex' => '/https:\/\/www\.facebook\.com\/([^\/]+)\/videos\/([0-9]+)/i',
-                        'index' => 0
-                    ),
-                    array(
-                        'regex' => '/https:\/\/www\.facebook\.com\/.+video\.php\?href=([^&]+)/i',
-                        'index' => 1
-                    )
-                )
-            ),
-            
-            '_makeAmpFacebookPost' => array(
-                'width' => 486,
-                'height'=> 657,
-                
-                'regexps' => array(
-                    array(
-                        'regex' => '/https:\/\/www\.facebook\.com\/([^\/]+)\/posts\/([0-9]+)/i',
-                        'index' => 0
-                    ),
-                    array(
-                        'regex' => '/https:\/\/www\.facebook\.com\/.+post\.php\?href=([^&]+)/i',
-                        'index' => 1
-                    )
-                )
-            ),
-            
-            '_makeAmpInstagram' => array(
-                'width' => 320,
-                'height' => 320,
-                
-                'regexps' => array(
-                    array(
-                        'regex' => '/instagram\.com\/p\/([\w]+)/',
-                        'index' => 1
-                    )
-                )
-            ),
-            
-            '_makeAmpVine' => array(
-                'width' => 600,
-                'height'=> 600,
-                
-                'regexps' => array(
-                    array(
-                        'regex' => '/vine\.co\/v\/([^\/]+)/',
-                        'index' => 1
-                    )
-                )
-            )
-        );
-        
         for($i=($iframes->length-1); $i>=0; $i--){
             $iframe = $iframes->item($i);
             $attrs = $this->_getAttribute($iframe, array(
@@ -399,7 +415,7 @@ class Camp
             $amp_el = null;
             
             // let find out if it's one of known componentes
-            foreach($regexps as $method => $rule){
+            foreach($this->regexps as $method => $rule){
                 foreach($rule['regexps'] as $re){
                     if(preg_match($re['regex'], $attrs['src'], $m)){
                         if(!$attrs['width'])
@@ -572,6 +588,73 @@ class Camp
     }
     
     /**
+     * Convert object element
+     * @return $this
+     */
+    private function _convertObject(){
+        $objects = $this->doc->getElementsByTagName('object');
+        if(!$objects->length)
+            return $this;
+        
+        for($i=($objects->length-1); $i>=0; $i--){
+            $object = $objects->item($i);
+            $attrs = $this->_getAttribute($object, array(
+                'width' => true,
+                'height' => true
+            ));
+            
+            $attrs['width'] = (int)$attrs['width'];
+            $attrs['height']= (int)$attrs['height'];
+            
+            $amp_el = false;
+            
+            foreach($this->regexps as $method => $rule){
+                if(!isset($rule['childs']))
+                    continue;
+                
+                foreach($rule['childs'] as $tag){
+                    $childs = $object->getElementsByTagName($tag);
+                    if(!$childs->length)
+                        continue;
+                    
+                    foreach($childs as $child){
+                        $val = $child->getAttribute('value');
+                        if(!$val)
+                            $val = $child->getAttribute('src');
+                        
+                        if(!$val)
+                            continue;
+                        
+                        // get size from the node
+                        if($child->getAttribute('width'))
+                            $attrs['width'] = $child->getAttribute('width');
+                        if($child->getAttribute('height'))
+                            $attrs['height'] = $child->getAttribute('height');
+                        
+                        foreach($rule['regexps'] as $re){
+                            if(preg_match($re['regex'], $val, $m)){
+                                if(!$attrs['width'])
+                                    $attrs['width'] = $rule['width'];
+                                if(!$attrs['height'])
+                                    $attrs['height'] = $rule['height'];
+                                
+                                $id = urldecode($m[$re['index']]);
+                                $amp_el = $this->$method($id, $attrs);
+                                break 4;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if($amp_el)
+                $object->parentNode->replaceChild($amp_el, $object);
+        }
+        
+        return $this;
+    }
+    
+    /**
      * Convert twitter embed
      * @return $this
      */
@@ -647,13 +730,16 @@ class Camp
             $attr['height']= (int)$attr['height'];
             
             // convert http(s):// to //
-            if(array_key_exists('src', $attr))
+            if(isset($attr['src']))
                 $attr['src'] = preg_replace('!^http(s?):!', '', $attr['src']);
             
             if(!$attr['width'])
                 $attr['width'] = $this->defaultWidth;
             if(!$attr['height'])
                 $attr['height']= $this->defaultHeight;
+            
+            if(!isset($attr['poster']) && $this->videoPoster)
+                $attr['poster'] = $this->videoPoster;
             
             $amp_video = $this->doc->createElement('amp-video');
             $this->_setAttribute($amp_video, $attr);
@@ -688,25 +774,11 @@ class Camp
             $video->parentNode->replaceChild($amp_video, $video);
         }
         
+        $this->_addComponent('amp-video');
+        
         return $this;
     }
     
-    /**
-     * Get element attribute
-     * @param object node The node where the attr taken.
-     * @param array attrs attr-required pair of attribute to get.
-     * @return array name-value pair of the element attribute
-     */
-    private function _getAttribute($node, $attrs){
-        $result = array();
-        foreach($attrs as $attr => $must){
-            $value = $node->getAttribute($attr);
-            if($node->hasAttribute($attr) || $must)
-                $result[$attr] = $value;
-        }
-        
-        return $result;
-    }
     
     /**
      * Make amp-facebook component
@@ -777,28 +849,6 @@ class Camp
     }
     
     /**
-     * Make amp-youtube component
-     * @param string id Youtube video id
-     * @param array attrs List of element attributes
-     * @return object amp-youtube node
-     */
-    private function _makeAmpYoutube($id, $attrs){
-        unset($attrs['src']);
-        if(isset($attrs['frameborder']))
-            unset($attrs['frameborder']);
-        
-        $attrs['data-videoid'] = $id;
-        $attrs['layout'] = 'responsive';
-        
-        $amp_youtube = $this->doc->createElement('amp-youtube');
-        $this->_setAttribute($amp_youtube, $attrs);
-        
-        $this->_addComponent('amp-youtube');
-        
-        return $amp_youtube;
-    }
-    
-    /**
      * Make amp-vine component
      * @param string id Vine video id
      * @param array attrs List of element attributes
@@ -820,6 +870,46 @@ class Camp
     }
     
     /**
+     * Make amp-youtube component
+     * @param string id Youtube video id
+     * @param array attrs List of element attributes
+     * @return object amp-youtube node
+     */
+    private function _makeAmpYoutube($id, $attrs){
+        unset($attrs['src']);
+        if(isset($attrs['frameborder']))
+            unset($attrs['frameborder']);
+        
+        $attrs['data-videoid'] = $id;
+        $attrs['layout'] = 'responsive';
+        
+        $amp_youtube = $this->doc->createElement('amp-youtube');
+        $this->_setAttribute($amp_youtube, $attrs);
+        
+        $this->_addComponent('amp-youtube');
+        
+        return $amp_youtube;
+    }
+    
+    
+    /**
+     * Get element attribute
+     * @param object node The node where the attr taken.
+     * @param array attrs attr-required pair of attribute to get.
+     * @return array name-value pair of the element attribute
+     */
+    private function _getAttribute($node, $attrs){
+        $result = array();
+        foreach($attrs as $attr => $must){
+            $value = $node->getAttribute($attr);
+            if($node->hasAttribute($attr) || $must)
+                $result[$attr] = $value;
+        }
+        
+        return $result;
+    }
+    
+    /**
      * Set element attribute
      * @param object node The node where the element will be put
      * @param array attrs name-value pair of attribute to set.
@@ -828,6 +918,7 @@ class Camp
         foreach($attrs as $att => $value)
             $node->setAttribute($att, $value);
     }
+    
     
     /**
      * Parse the HTML text.
@@ -851,15 +942,17 @@ class Camp
         $this->doc = HTML5_Parser::parse($html);
         
         $this
-            ->_convertVideo()
-            ->_convertImg()
             ->_convertAd()
-            ->_convertTwitter()
             ->_convertFacebook()
-            ->_convertInstagram()
             ->_convertIframe()
-            ->_cleanProhibitedTag()
-            ->_cleanProhibitedAttribute();
+            ->_convertImg()
+            ->_convertInstagram()
+            ->_convertObject()
+            ->_convertTwitter()
+            ->_convertVideo()
+            
+            ->_cleanProhibitedAttribute()
+            ->_cleanProhibitedTag();
         
         $amp = $this->doc->saveHTML();
         $amp = $this->_cleanHTMLClosingTag($amp);

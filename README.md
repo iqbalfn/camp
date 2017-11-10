@@ -3,13 +3,13 @@ Camp
 
 Convert HTML main article to AMPHTML. Please note that this library is not meant
 to convert entirely HTML document to AMP. Use the library to convert main article
-of the page only, as in most case main article is the part where you generated
+of the page only, as in most case main article is the part where we generated
 it by WYSIWYG ( ex: tinymce ). Another HTML part should rewrite to fullfill AMP
 specifications.
 
-Due to complicated processing in background, I suggest you to not to use the
-library for every user request. Cache the result or save it to DB instead of
-convert it everytime user ask for it.
+Due to complicated processing in background, I suggest to not to use the library
+for every user request. Cache the result or save it to DB instead of convert it
+everytime user ask for it.
 
 Usage
 -----
@@ -151,6 +151,10 @@ If no way to find image size, use this size instead. Default 200.
 Default image to use as `amp-iframe` image placeholder. The image is an `amp-img`
 with attribute `layout=fill`.
 
+### videoPoster *string*
+
+Default image to use as default video poster if no poster found on the video tag.
+
 Dependencies
 ------------
 
@@ -160,8 +164,9 @@ Not to mention PHP 7.0.3, they still have no idea how to read HTML5 syntax.
 Contribute
 ----------
 
-This project is under MIT license, and hosted on github. You know what is that mean,
-don't you?
+This project is under MIT license, and hosted on github. There's always new tag
+that may visible on article content, I'll need help to add more parser/converter
+for each element. Please see below list of element that need to convert.
 
 TODO
 ----
@@ -169,18 +174,41 @@ TODO
 1. Remove unusable SVG syntax.
 1. `amp-ad`. Support another ad provider, currently only support AdSense.
 1. Support another components  
+amp-3q-player  
+amp-apester-media  
 amp-audio  
+amp-brid-player  
 amp-brightcove  
 amp-carousel  
+amp-dailymotion  
+amp-gist  
+amp-google-vrview-image  
+amp-gfycat  
+amp-hulu  
+amp-ima-video  
 amp-image-lightbox  
+amp-imgur  
+amp-izlesene  
+amp-jwplayer  
+amp-kaltura-player  
 amp-lightbox  
 amp-list  
 amp-mustache  
+amp-nexxtv-player  
+amp-o2-player  
+amp-ooyala-player  
 amp-pinterest  
+amp-playbuzz  
+amp-reach-player  
+amp-reddit  
 amp-slides  
-1. `amp-video` too set default `poster` attribute.
+amp-soundcloud  
+amp-springboard-player  
+amp-vimeo  
+amp-viz-vega  
+amp-vk  
 
-Bug?
-----
+Bug
+---
 
-You know, just report it.
+It's oke to create a ticket.
