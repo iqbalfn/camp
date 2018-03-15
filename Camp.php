@@ -320,7 +320,7 @@ class Camp
                 
                 $div_overflow = $this->doc->createElement('div');
                 $div_overflow->setAttribute('overflow', 'true');
-                $amp_ad->appendChild($div_overflowe);
+                $amp_ad->appendChild($div_overflow);
                 
                 $this->_addComponent('amp-ad');
             }
