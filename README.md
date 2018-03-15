@@ -174,41 +174,41 @@ TODO
 1. Remove unusable SVG syntax.
 1. `amp-ad`. Support another ad provider, currently only support AdSense.
 1. Support another components  
-amp-3q-player  
-amp-apester-media  
-amp-audio  
-amp-brid-player  
-amp-brightcove  
-amp-carousel  
-amp-dailymotion  
-amp-gist  
-amp-google-vrview-image  
-amp-gfycat  
-amp-hulu  
-amp-ima-video  
-amp-image-lightbox  
-amp-imgur  
-amp-izlesene  
-amp-jwplayer  
-amp-kaltura-player  
-amp-lightbox  
-amp-list  
-amp-mustache  
-amp-nexxtv-player  
-amp-o2-player  
-amp-ooyala-player  
-amp-pinterest  
-amp-playbuzz  
-amp-reach-player  
-amp-reddit  
-amp-slides  
-amp-soundcloud  
-amp-springboard-player  
-amp-vimeo  
-amp-viz-vega  
-amp-vk  
+    1. amp-3q-player  
+    1. amp-apester-media  
+    1. amp-audio  
+    1. amp-brid-player  
+    1. amp-brightcove  
+    1. amp-carousel  
+    1. amp-dailymotion  
+    1. amp-gist  
+    1. amp-google-vrview-image  
+    1. amp-gfycat  
+    1. amp-hulu  
+    1. amp-ima-video  
+    1. amp-image-lightbox  
+    1. amp-imgur  
+    1. amp-izlesene  
+    1. amp-jwplayer  
+    1. amp-kaltura-player  
+    1. amp-lightbox  
+    1. amp-list  
+    1. amp-mustache  
+    1. amp-nexxtv-player  
+    1. amp-o2-player  
+    1. amp-ooyala-player  
+    1. amp-pinterest  
+    1. amp-playbuzz  
+    1. amp-reach-player  
+    1. amp-reddit  
+    1. amp-slides  
+    1. amp-soundcloud  
+    1. amp-springboard-player  
+    1. amp-vimeo  
+    1. amp-viz-vega  
+    1. amp-vk  
 
-Bug
----
+Bug?
+----
 
 It's oke to create a ticket.

@@ -310,11 +310,17 @@ class Camp
                 
                 $amp_ad = $this->doc->createElement('amp-ad');
                 $attr['type'] = 'adsense';
-                $attr['height'] = 200;
-                $attr['width'] = 300;
+                $attr['height'] = 320;
+                $attr['width'] = '100vw';
+                $attr['data-auto-format'] = 'rspv';
+                $attr['data-full-width'] = 'true';
                 
                 $this->_setAttribute($amp_ad, $attr);
                 $ins->parentNode->replaceChild($amp_ad, $ins);
+                
+                $div_overflow = $this->doc->createElement('div');
+                $div_overflow->setAttribute('overflow', 'true');
+                $amp_ad->appendChild($div_overflowe);
                 
                 $this->_addComponent('amp-ad');
             }

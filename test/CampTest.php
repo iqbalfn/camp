@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 require dirname(dirname(__FILE__)) . '/Camp.php';
 
-class AmpImgTest extends TestCase
+class AmpTest extends TestCase
 {
     
     /**************************************************************************
@@ -75,7 +75,7 @@ class AmpImgTest extends TestCase
         return array(
             array(
                 'lorem <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><!-- MRSNavResponsive --><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3216619137195954" data-ad-slot="9167553021" data-ad-format="auto"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script> ipsum',
-                'lorem <!-- MRSNavResponsive --><amp-ad data-ad-client="ca-pub-3216619137195954" data-ad-slot="9167553021" type="adsense" height="200" width="300"></amp-ad> ipsum'
+                'lorem <!-- MRSNavResponsive --><amp-ad data-ad-client="ca-pub-3216619137195954" data-ad-slot="9167553021" type="adsense" height="320" width="100vw" data-auto-format="rspv" data-full-width="true"><div overflow="true"></div></amp-ad> ipsum'
             )
         );
      }
